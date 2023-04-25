@@ -15,14 +15,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import static com.example.notificationtest.MyBroadcastReceiver.ACTION_SNOOZE;
 import static com.example.notificationtest.MyBroadcastReceiver.EXTRA_NOTIFICATION_ID;
@@ -41,33 +52,92 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final String TAG = "main";
 
-    private boolean isTouch = false;
+    private String URL = "ssh://artemis_csub/home/stu/pcruz/public_html/Reminder/login.php";
 
-    Button btnClick;
+    Button loginbutton;
+    Button registerbutton;
     TextView message;
-    TextView outsourcetext;
-    String strxx = "Please click again!";
+    TextView errortext;
+    String errorMsg = "";
+
+    EditText etEmail;
+    EditText etPassword;
+    String email = "";
+    String password = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnClick = (Button) findViewById(R.id.button);
-        btnClick.setOnClickListener(MainActivity.this);
-        message = (TextView) findViewById(R.id.message);
-        outsourcetext = (TextView) findViewById(R.id.outsourcetext);
+        loginbutton = (Button) findViewById(R.id.loginbutton);
+        loginbutton.setOnClickListener(this);
+        registerbutton = (Button) findViewById(R.id.registerbutton);
+        registerbutton.setOnClickListener(this);
+
+        message = (TextView) findViewById(R.id.logintext);
+        errortext = findViewById(R.id.errortext);
+        errortext.setText(errorMsg);
+
+        etEmail = findViewById(R.id.inputEmail);
+        etPassword = findViewById(R.id.inputPass);
 
         createNotificationChannel();
-
         Log.e(TAG, "onCreate");
-
         LongOperation lo = new LongOperation(this);
-        lo.execute("notif title");
+
+        // send notification
+        //lo.execute("notif title");
     }
 
 
+    public void login () {
+        email = etEmail.getText().toString().trim();
+        password = etPassword.getText().toString().trim();
+        final Intent success = new Intent(this, reminderPage.class);
 
+        if(!email.equals("") && !password.equals("")) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response.equals("success")) {
+                        startActivity(success);
+                        finish();
+                    } else if (response.equals("failure")) {
+                        errorMsg = "Incorrect email and/or password.";
+                        errortext.setText(errorMsg);
+                        //Toast.makeText(MainActivity.this, "Invalid Login Id/Password", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(MainActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> data = new HashMap<>();
+                    data.put( "email", email);
+                    data.put("password", password);
+                    return data;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
+        }else{
+            errorMsg = "Please input email and password.";
+            errortext.setText(errorMsg);
+            //Toast.makeText(this, "Fields can not be empty!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void register(View view) {
+        final Intent register = new Intent(MainActivity.this, Register.class);
+        startActivity(register);
+        finish();
+    }
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -85,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private class LongOperation extends AsyncTask<String, String, String> {
+    public class LongOperation extends AsyncTask<String, String, String> {
 
         private static final String TAG = "longoperation";
         private Context ctx;
@@ -156,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /*
     // thread checks for updates
     public class Thx implements Runnable {
         @Override
@@ -168,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 while ((line = in.readLine()) != null) {
                     total.append(line + " ");
                 }
-                strxx = total.toString();
                 in.close();
             } catch (MalformedURLException e) {
             } catch (IOException e) {
@@ -176,69 +246,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
     };
+     */
 
-    // https://stackoverflow.com/questions/20156733/how-to-add-button-click-event-in-android-studio
-    // button press event
     @Override
     public void onClick(View v) {
-        // starts thread that reads from file
-        Thread thread = new Thread(new Thx());
-        thread.start();
-        // toast popup message
-        Toast.makeText(this, "Toast text", Toast.LENGTH_SHORT).show();
-        message.setText("Toast Text");
-        outsourcetext.setText(strxx);
-    }
-
-    // https://stackoverflow.com/questions/3142670/how-do-i-detect-touch-input-on-the-android
-    // swipe event
-    int X0 = 0;
-    int X1 = 0;
-    int Y0 = 0;
-    int Y1 = 0;
-    int Xthreshold = 200;
-    int Ythreshold = 1000;
-    boolean Xcheck = true;
-    boolean Ycheck = false;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        int eventaction = event.getAction();
-
-        switch (eventaction) {
-            case MotionEvent.ACTION_DOWN: // begin swiping motion
-                X0 = (int) event.getX();
-                Y0 = (int) event.getY();
-                isTouch = true;
+        switch (v.getId()){
+            case R.id.loginbutton:
+                //what should happen when user clicks login
+                login();
                 break;
-
-            case MotionEvent.ACTION_MOVE: // end swiping motion
-                X1 = (int) event.getX();
-                Y1 = (int) event.getY();
-
-                if(Math.abs(X0 - X1) > Xthreshold){
-                    Xcheck = false;
-                }
-
-                if(Y1 - Y0 >= 1000){
-                    Ycheck = true;
-                }
-
-                if(Xcheck && Ycheck){
-                    //Toast.makeText(this, "YEAH BABY", Toast.LENGTH_SHORT).show();
-                    this.finishAffinity(); //close app
-                }
-                break;
-
-            case MotionEvent.ACTION_UP:
-                X0 = 0;
-                X1 = 0;
-                Y0 = 0;
-                Y1 = 0;
-                Xcheck = true;
-                Ycheck = false;
+            case R.id.registerbutton:
+                // what should happen when user clicks register
                 break;
         }
-        return true;
     }
 }
