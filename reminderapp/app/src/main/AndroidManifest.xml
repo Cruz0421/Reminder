@@ -13,10 +13,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Register"></activity>
         <activity
-            android:name=".editReminder"
+            android:name=".AddReminder"
             android:exported="false" />
         <activity
-            android:name=".reminderPage"
+            android:name=".ReminderList"
             android:exported="false" />
 
         <receiver

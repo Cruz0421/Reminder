@@ -27,11 +27,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerbutton = (Button) findViewById(R.id.registerbutton);
         registerbutton.setOnClickListener(this);
 
-        message = (TextView) findViewById(R.id.logintext);
+        message = (TextView) findViewById(R.id.textAddReminder);
         errortext = findViewById(R.id.errortext);
         errortext.setText(errorMsg);
 
@@ -94,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void login () {
         email = etEmail.getText().toString().trim();
         password = etPassword.getText().toString().trim();
-        final Intent success = new Intent(this, reminderPage.class);
+        final Intent success = new Intent(this, ReminderList.class);
 
         if(!email.equals("") && !password.equals("")) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -226,34 +221,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /*
-    // thread checks for updates
-    public class Thx implements Runnable {
-        @Override
-        public void run() {
-            try {
-                URL url = new URL("https://cs.csub.edu/~thooser/3350/apptext.txt");
-                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                StringBuilder total = new StringBuilder();
-                String line;
-                while ((line = in.readLine()) != null) {
-                    total.append(line + " ");
-                }
-                in.close();
-            } catch (MalformedURLException e) {
-            } catch (IOException e) {
-            }
-            return;
-        }
-    };
-     */
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.loginbutton:
                 //what should happen when user clicks login
-                login();
+                //login();
+                final Intent temp = new Intent(this, ReminderList.class);
+                startActivity(temp);
                 break;
             case R.id.registerbutton:
                 // what should happen when user clicks register
