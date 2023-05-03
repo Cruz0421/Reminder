@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.notificationtest">
+    package="com.example.reminderapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,20 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Register"></activity>
+        <activity android:name="com.example.reminderapp.Register"></activity>
         <activity
-            android:name=".editReminder"
+            android:name="com.example.reminderapp.AddReminder"
             android:exported="false" />
         <activity
-            android:name=".reminderPage"
+            android:name="com.example.reminderapp.ReminderList"
             android:exported="false" />
 
         <receiver
-            android:name=".MyBroadcastReceiver"
+            android:name="com.example.reminderapp.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.reminderapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

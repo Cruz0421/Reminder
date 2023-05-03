@@ -4,7 +4,7 @@ Date: Spring 2023
 Purpose:
 */
 
-package com.example.notificationtest;
+package com.example.reminderapp;
 
 // https://github.com/michaelJustin/android-notification
 
@@ -39,8 +39,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import static com.example.notificationtest.MyBroadcastReceiver.ACTION_SNOOZE;
-import static com.example.notificationtest.MyBroadcastReceiver.EXTRA_NOTIFICATION_ID;
+import static com.example.reminderapp.MyBroadcastReceiver.ACTION_SNOOZE;
+import static com.example.reminderapp.MyBroadcastReceiver.EXTRA_NOTIFICATION_ID;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -60,10 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String email = "";
     String password = "";
 
+    private database dbHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHandler = new database(MainActivity.this);
 
         loginbutton = (Button) findViewById(R.id.loginbutton);
         loginbutton.setOnClickListener(this);
