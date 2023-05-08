@@ -3,7 +3,7 @@ package com.example.reminderapp;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +29,7 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
     String[] repeatChoices;
 
     // data to be stored in DB
+    // TODO: store addReminder data to DB
     String name;
     String date;
     String time;
