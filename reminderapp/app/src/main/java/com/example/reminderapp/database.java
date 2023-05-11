@@ -1,33 +1,53 @@
 package com.example.reminderapp;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class database extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "reminddb";
-    private static final int DB_VERSION = 1;
-    private static final String TABLE_NAME = "test";
-    private static final String ID_COL = "id";
-    private static final String NAME_COL = "name";
+    public static final String DBName = "Login.db";
 
     public database(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, "Login.db", null, 1 );
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE " + TABLE_NAME + " ("
-                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NAME_COL + " TEXT)";
-        db.execSQL(query);
+    public void onCreate(SQLiteDatabase MyDB) {
+        MyDB.execSQL("create Table users(username TEXT primary key, password TEXT)");
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // this method is called to check if the table exists already.
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase MyDB, int i, int i1) {
+        MyDB.execSQL("drop Table if exists users");
+    }
+
+    public boolean insertData (String username, String password){
+        SQLiteDatabase MyBD = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("username", username);
+        contentValues.put("password", password);
+        long result = MyBD.insert("users",null,contentValues);
+        if(result == -1) return false;
+        else
+            return true;
+    }
+    public boolean checkusername (String username){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery("Select * from users where username = ?", new String[] {username});
+        if(cursor.getCount()>0)
+            return true;
+        else
+            return false;
+    }
+    public boolean checkusernamepassword (String username, String password){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery("Select * from users where username = ? and password = ?", new String[] {username, password});
+        if (cursor.getCount()>0)
+            return true;
+        else
+            return  false;
     }
 }

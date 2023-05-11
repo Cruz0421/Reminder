@@ -22,24 +22,36 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements View.OnClickListener{
     private EditText etName, etEmail, etPassword, etReenterPassword;
     private TextView tvStatus;
     private Button btnRegister;
     private String URL = "ssh://artemis_csub/home/stu/pcruz/public_html/Reminder/register.php";
     private String name, email, password, reenterPassword;
+    TextView errortext;
+    String errorMsg = "";
+    Button loginbutton;
+    Button registerbutton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
-        etName = findViewById(R.id.etName);
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
-        etReenterPassword = findViewById(R.id.etReenterPassword);
-        tvStatus = findViewById(R.id.tvStatus);
-        btnRegister = findViewById(R.id.btnRegister);
+        //etName = findViewById(R.id.etName);
+        etEmail = findViewById(R.id.inputEmail);
+        etPassword = findViewById(R.id.inputPass);
+        etReenterPassword = findViewById(R.id.inputPass);
+        //tvStatus = findViewById(R.id.tvStatus);
+        btnRegister = findViewById(R.id.loginbutton);
         name = email = password = reenterPassword = "";
+
+        errortext = findViewById(R.id.errortext);
+        errortext.setText(errorMsg);
+        loginbutton = findViewById(R.id.loginbutton);
+        loginbutton.setOnClickListener(this);
+        registerbutton = findViewById(R.id.registerbutton);
+        registerbutton.setOnClickListener(this);
+
     }
 
     public void save(View view) {
@@ -87,5 +99,21 @@ public class Register extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.loginbutton:
+                //what should happen when user clicks login
+                //login();
+                final Intent temp = new Intent(this, MainActivity.class);
+                startActivity(temp);
+                break;
+            case R.id.registerbutton:
+                // what should happen when user clicks register
+
+                break;
+        }
     }
 }

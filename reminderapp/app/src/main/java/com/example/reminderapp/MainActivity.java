@@ -11,6 +11,7 @@ package com.example.reminderapp;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -39,8 +40,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import static com.example.reminderapp.MyBroadcastReceiver.ACTION_SNOOZE;
-import static com.example.reminderapp.MyBroadcastReceiver.EXTRA_NOTIFICATION_ID;
+//import static com.example.reminderapp.MyBroadcastReceiver.ACTION_SNOOZE;
+//import static com.example.reminderapp.MyBroadcastReceiver.EXTRA_NOTIFICATION_ID;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -60,21 +61,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String email = "";
     String password = "";
 
-    private database dbHandler;
+    database dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbHandler = new database(MainActivity.this);
+        dbHandler = new database(this);
 
         loginbutton = (Button) findViewById(R.id.loginbutton);
         loginbutton.setOnClickListener(this);
         registerbutton = (Button) findViewById(R.id.registerbutton);
         registerbutton.setOnClickListener(this);
 
-        message = (TextView) findViewById(R.id.textAddReminder);
+        message = (TextView) findViewById(R.id.logintext);
         errortext = findViewById(R.id.errortext);
         errortext.setText(errorMsg);
 
@@ -83,11 +84,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         createNotificationChannel();
         Log.e(TAG, "onCreate");
-        LongOperation lo = new LongOperation(this);
+        //LongOperation lo = new LongOperation(this);
 
         // send notification
         //lo.execute("notif title");
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        startService(new Intent(this, NotificationService.class));
+    }
+
 
     // TODO: implement login
     public void login () {
@@ -153,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             notificationManager.createNotificationChannel(channel);
         }
     }
-
+/*
     public class LongOperation extends AsyncTask<String, String, String> {
 
         private static final String TAG = "longoperation";
@@ -192,9 +200,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         void sendNotification(String title, int notificationId) {
 
             // Create an explicit intent for an Activity in your app
-        /* Intent intent = new Intent(ctx, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent, 0); */
 
             Intent snoozeIntent = new Intent(ctx, MyBroadcastReceiver.class);
             snoozeIntent.setAction(ACTION_SNOOZE);
@@ -224,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             notificationManager.notify(notificationId, builder.build());
         }
     }
-
+*/
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -236,6 +241,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.registerbutton:
                 // what should happen when user clicks register
+                final Intent temp2 = new Intent(this, Register.class);
+                startActivity(temp2);
                 break;
         }
     }
