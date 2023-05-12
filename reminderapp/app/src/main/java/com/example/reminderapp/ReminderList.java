@@ -1,3 +1,9 @@
+/*
+Authors: Taylor Hooser, Patrick Cruz
+Date: Spring 2023
+Purpose: homepage that shows all active reminders
+*/
+
 package com.example.reminderapp;
 
 import android.app.NotificationChannel;
@@ -7,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,8 +24,8 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
     LinearLayout layout;
 
     private static final String CHANNEL_ID = "CHANNEL_ID";
-    private static final String TAG = "reminderlist";
 
+    // main functionality
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +37,7 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
         layout = findViewById(R.id.container);
 
         createNotificationChannel();
-        Log.e(TAG, "onCreate");
-        notification notif = new notification(this);
+        Notification notif = new Notification(this);
 
         // TODO: for loop for each reminder
         String name = "Reminder1";
@@ -50,6 +54,7 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
         addCard(name2, date2, time2, repeat2);
     }
 
+    // creates a notification channel, which is needed to send notifications
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
@@ -62,19 +67,18 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // https://stackoverflow.com/questions/20156733/how-to-add-button-click-event-in-android-studio
-    // button press event
+    // hander for click events
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.addreminder:
-                //go to add reminder page
                 Intent editReminder = new Intent(ReminderList.this, AddReminder.class);
                 startActivity(editReminder);
                 break;
         }
     }
 
+    // draws a new card for a given reminder
     private void addCard(String name, String date, String time, String repeat) {
         final View view = getLayoutInflater().inflate(R.layout.card, null);
 
@@ -97,8 +101,6 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
                 // TODO: delete from DB on click
             }
         });
-
         layout.addView(view);
     }
-
 }

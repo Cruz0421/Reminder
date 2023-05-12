@@ -1,3 +1,9 @@
+/*
+Authors: Taylor Hooser, Patrick Cruz
+Date: Spring 2023
+Purpose: Page to add reminder
+*/
+
 package com.example.reminderapp;
 
 import android.app.DatePickerDialog;
@@ -26,16 +32,17 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
     TextView timeselected;
     EditText reminderName;
     EditText etnotes;
+
     String[] repeatChoices;
 
     // data to be stored in DB
-    // TODO: store addReminder data to DB
     String name;
     String date;
     String time;
     String repeat;
     String notes;
 
+    // main functionality
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +62,7 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
         reminderName = findViewById(R.id.etname);
         etnotes = findViewById(R.id.etnotes);
 
-        // spiner stuff
+        // spinner stuff
         Spinner spin = findViewById(R.id.repeatSpinner);
         spin.setOnItemSelectedListener(this);
         repeatChoices = new String[]{"Hourly", "Daily", "Weekly", "Monthly", "Yearly"};
@@ -65,6 +72,7 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    // handler for click events
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -116,7 +124,6 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
     }
 
     // Performing action when ItemSelected
-    // from spinner, Overriding onItemSelected method
     @Override
     public void onItemSelected(AdapterView arg0, View arg1, int position, long id)
     {
@@ -126,6 +133,6 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onNothingSelected(AdapterView arg0)
     {
-        // Auto-generated method stub
+        // Auto-generated stub
     }
 }

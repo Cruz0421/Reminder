@@ -1,3 +1,9 @@
+/*
+Authors: Taylor Hooser, Patrick Cruz
+Date: Spring 2023
+Purpose: page for registering new account
+*/
+
 package com.example.reminderapp;
 
 import android.content.Intent;
@@ -23,8 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
-    private EditText etName, etEmail, etPassword, etReenterPassword;
-    private TextView tvStatus;
+    private EditText etEmail, etPassword, etReenterPassword;
     private Button btnRegister;
     private String URL = "ssh://artemis_csub/home/stu/pcruz/public_html/Reminder/register.php";
     private String name, email, password, reenterPassword;
@@ -33,15 +38,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     Button loginbutton;
     Button registerbutton;
 
+    // main functionality
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
-        //etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.inputEmail);
         etPassword = findViewById(R.id.inputPass);
         etReenterPassword = findViewById(R.id.inputPass);
-        //tvStatus = findViewById(R.id.tvStatus);
         btnRegister = findViewById(R.id.loginbutton);
         name = email = password = reenterPassword = "";
 
@@ -54,8 +58,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
     }
 
+    // saves register information to database
     public void save(View view) {
-        name = etName.getText().toString().trim();
         email = etEmail.getText().toString().trim();
         password = etPassword.getText().toString().trim();
         reenterPassword = etReenterPassword.getText().toString().trim();
@@ -67,10 +71,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onResponse(String response) {
                     if (response.equals("success")) {
-                        tvStatus.setText("Successfully registered.");
                         btnRegister.setClickable(false);
                     } else if (response.equals("failure")) {
-                        tvStatus.setText("something is wrong");
                     }
                 }
             }, new Response.ErrorListener() {
@@ -95,24 +97,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
     }
 
-    public void login(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
+    // click event handler
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.loginbutton:
-                //what should happen when user clicks login
-                //login();
                 final Intent temp = new Intent(this, MainActivity.class);
                 startActivity(temp);
                 break;
             case R.id.registerbutton:
                 // what should happen when user clicks register
-
                 break;
         }
     }

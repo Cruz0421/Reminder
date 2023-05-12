@@ -1,10 +1,15 @@
+/*
+Authors: Taylor Hooser, Patrick Cruz
+Date: Spring 2023
+Purpose: Creates a background service so notifications can be sent even when app is not running
+*/
+
 package com.example.reminderapp;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,9 +20,9 @@ public class NotificationService extends Service {
 
     Timer timer;
     TimerTask timerTask;
-    String TAG = "Timers";
-    int Your_X_SECS = 5;
-    notification notif = new notification(this);
+    int Your_X_SECS = 15;
+
+    Notification notif = new Notification(this);
     String name = "placeholder";
     Date currentTime = Calendar.getInstance().getTime();
     Date reminderTime;
@@ -28,70 +33,56 @@ public class NotificationService extends Service {
         return null;
     }
 
+    // what happens when BG service starts
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand");
         super.onStartCommand(intent, flags, startId);
-
         startTimer();
-
         return START_STICKY;
     }
 
-
+    // stub: what happens when BG service is created
     @Override
     public void onCreate() {
-        Log.e(TAG, "onCreate");
-
-
+        // stub
     }
 
+    // stops timer when background service stops
     @Override
     public void onDestroy() {
-        Log.e(TAG, "onDestroy");
         stoptimertask();
         super.onDestroy();
-
-
     }
 
-    //we are going to use a handler to be able to run in our TimerTask
     final Handler handler = new Handler();
 
-
+    // starts timer
     public void startTimer() {
-        //set a new Timer
         timer = new Timer();
-
-        //initialize the TimerTask's job
         initializeTimerTask();
 
-        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-        timer.schedule(timerTask, 5000, Your_X_SECS * 1000); //
-        //timer.schedule(timerTask, 5000,1000); //
+        //after the first 5000ms the TimerTask will run every 10000ms
+        timer.schedule(timerTask, 5000, Your_X_SECS * 1000);
     }
 
+    // stops timer, if not already nuill
     public void stoptimertask() {
-        //stop the timer, if it's not already null
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
     }
 
+    // task that timer does
     public void initializeTimerTask() {
-
         timerTask = new TimerTask() {
             public void run() {
-
-                //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
                         //TODO CALL NOTIFICATION FUNC
                         // for each reminder:
                             // check if current time matches
                                 //notif.execute(name);
-
                     }
                 });
             }
