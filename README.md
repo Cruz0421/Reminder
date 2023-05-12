@@ -4,6 +4,11 @@
 ```
 Reminder application for CMPS 3390 Application Development 
 ```
+## Team
+```
+  -Patrick Cruz
+  -Taylor Hooser
+```
 ## Key Features
 ```
   -Sends notifications
@@ -19,9 +24,8 @@ Reminder application for CMPS 3390 Application Development
   -Data backup
   -Hosted on Odin
 ```
-## Team
+## Building and Running
 ```
-  -Patrick Cruz
-  -Taylor Hooser
+- Minimum API is 26, reccomend 29
 ```
 
