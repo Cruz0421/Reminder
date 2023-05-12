@@ -37,7 +37,7 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
         layout = findViewById(R.id.container);
 
         createNotificationChannel();
-        Notification notif = new Notification(this);
+        notification notif = new notification(this);
 
         // TODO: for loop for each reminder
         String name = "Reminder1";

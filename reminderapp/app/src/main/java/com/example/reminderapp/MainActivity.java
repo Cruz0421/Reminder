@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String email = "";
     String password = "";
 
-    Database dbHandler;
+    database dbHandler;
 
     // main functionality
     @Override
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbHandler = new Database(this);
+        dbHandler = new database(this);
 
         loginbutton = (Button) findViewById(R.id.loginbutton);
         loginbutton.setOnClickListener(this);

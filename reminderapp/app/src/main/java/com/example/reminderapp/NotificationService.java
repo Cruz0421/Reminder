@@ -22,7 +22,7 @@ public class NotificationService extends Service {
     TimerTask timerTask;
     int Your_X_SECS = 15;
 
-    Notification notif = new Notification(this);
+    notification notif = new notification(this);
     String name = "placeholder";
     Date currentTime = Calendar.getInstance().getTime();
     Date reminderTime;
