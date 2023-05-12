@@ -45,8 +45,9 @@ import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String CHANNEL_ID = "CHANNEL_ID";
-    private static final String TAG = "main";
+
+    //private static final String CHANNEL_ID = "CHANNEL_ID";
+    //private static final String TAG = "main";
 
     private String URL = "ssh://artemis_csub/home/stu/pcruz/public_html/Reminder/login.php";
 
@@ -82,14 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etEmail = findViewById(R.id.inputEmail);
         etPassword = findViewById(R.id.inputPass);
 
-        createNotificationChannel();
-        Log.e(TAG, "onCreate");
-        //LongOperation lo = new LongOperation(this);
-
-        // send notification
-        //lo.execute("notif title");
     }
 
+    // creates background service to send notifications even when app is off
     @Override
     protected void onStop() {
         super.onStop();
@@ -146,90 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-/*
-    public class LongOperation extends AsyncTask<String, String, String> {
 
-        private static final String TAG = "longoperation";
-        private Context ctx;
-        private AtomicInteger notificationId = new AtomicInteger(0);
-
-        LongOperation(Context ctx) {
-            this.ctx = ctx;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            for (String s : params) {
-                Log.e(TAG, s);
-
-                publishProgress(s);
-
-                for (int i = 0; i < 5; i++) {
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        Thread.interrupted();
-                    }
-                }
-            }
-            return "Executed";
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            for (String title: values) {
-                sendNotification(title, notificationId.incrementAndGet());
-            }
-        }
-
-        void sendNotification(String title, int notificationId) {
-
-            // Create an explicit intent for an Activity in your app
-
-            Intent snoozeIntent = new Intent(ctx, MyBroadcastReceiver.class);
-            snoozeIntent.setAction(ACTION_SNOOZE);
-            snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
-
-            Log.e(TAG, snoozeIntent.getExtras().toString());
-
-            Log.e(TAG, "snoozeIntent id: " + snoozeIntent.getIntExtra(EXTRA_NOTIFICATION_ID, -1));
-
-            PendingIntent snoozePendingIntent =
-                    PendingIntent.getBroadcast(ctx, notificationId, snoozeIntent, 0);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    //.setContentTitle(String.format("%s (id %d)", title, notificationId))
-                    .setContentTitle(String.format("%s", title))
-                    .setContentText("notification body")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(false)
-                    // Add the action button
-                    .addAction(R.drawable.ic_launcher_foreground, ctx.getString(R.string.snooze),
-                            snoozePendingIntent);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(ctx);
-
-            // notificationId is a unique int for each notification that you must define
-            notificationManager.notify(notificationId, builder.build());
-        }
-    }
-*/
     @Override
     public void onClick(View v) {
         switch (v.getId()){

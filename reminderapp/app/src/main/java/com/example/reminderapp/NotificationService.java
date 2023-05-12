@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,6 +17,10 @@ public class NotificationService extends Service {
     TimerTask timerTask;
     String TAG = "Timers";
     int Your_X_SECS = 5;
+    notification notif = new notification(this);
+    String name = "placeholder";
+    Date currentTime = Calendar.getInstance().getTime();
+    Date reminderTime;
 
 
     @Override
@@ -81,9 +87,10 @@ public class NotificationService extends Service {
                 //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
-
                         //TODO CALL NOTIFICATION FUNC
-                        //YOURNOTIFICATIONFUNCTION();
+                        // for each reminder:
+                            // check if current time matches
+                                //notif.execute(name);
 
                     }
                 });

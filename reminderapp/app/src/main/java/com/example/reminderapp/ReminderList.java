@@ -1,8 +1,13 @@
 package com.example.reminderapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -12,6 +17,9 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
 
     Button addReminder;
     LinearLayout layout;
+
+    private static final String CHANNEL_ID = "CHANNEL_ID";
+    private static final String TAG = "reminderlist";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +31,35 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
 
         layout = findViewById(R.id.container);
 
-        // TODO: for loop for reminderlist
+        createNotificationChannel();
+        Log.e(TAG, "onCreate");
+        notification notif = new notification(this);
+
+        // TODO: for loop for each reminder
         String name = "Reminder1";
-        String date = "2-5-2023";
-        String time = "22:52";
+        String date = "11-5-2023";
+        String time = "18:33";
         String repeat = "Hourly";
         addCard(name, date, time, repeat);
+        notif.execute(name);
+
+        String name2 = "Reminder2";
+        String date2 = "11-5-2023";
+        String time2 = "19:33";
+        String repeat2 = "Hourly";
+        addCard(name2, date2, time2, repeat2);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     // https://stackoverflow.com/questions/20156733/how-to-add-button-click-event-in-android-studio
