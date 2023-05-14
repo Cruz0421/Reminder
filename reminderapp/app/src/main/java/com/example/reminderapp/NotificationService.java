@@ -10,6 +10,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,12 +21,15 @@ public class NotificationService extends Service {
 
     Timer timer;
     TimerTask timerTask;
-    int Your_X_SECS = 15;
+    int secDelay = 15;
 
     notification notif = new notification(this);
     String name = "placeholder";
     Date currentTime = Calendar.getInstance().getTime();
     Date reminderTime;
+
+    Calendar c;
+    Log log;
 
 
     @Override
@@ -66,8 +70,7 @@ public class NotificationService extends Service {
         timer = new Timer();
         initializeTimerTask();
 
-        //after the first 5000ms the TimerTask will run every 10000ms
-        timer.schedule(timerTask, 5000, Your_X_SECS * 1000);
+        timer.schedule(timerTask, 5000, secDelay * 1000);
     }
 
     // stops timer, if not already nuill
@@ -85,9 +88,29 @@ public class NotificationService extends Service {
                 handler.post(new Runnable() {
                     public void run() {
                         //TODO: notification function
-                            // for each reminder:
-                            // check if current time matches
-                                //notif.execute(name);
+                            // currently causes crashes, commented out
+                            // retrieve reminder information from DB
+                            // and loop, checking if its time to get a reminder
+
+                        /*
+                        currentTime = Calendar.getInstance().getTime();
+                        log.d("tag", "current time: " + currentTime);
+
+                        c = Calendar.getInstance();
+                        c.set(Calendar.MONTH, 5);
+                        c.set(Calendar.DATE, 12);
+                        c.set(Calendar.YEAR, 2023);
+                        c.set(Calendar.HOUR, 3);
+                        c.set(Calendar.MINUTE, 52);
+                        reminderTime = c.getTime();
+
+                        log.d("tag", "reminder time: " + reminderTime);
+
+                        if (currentTime.compareTo(reminderTime) < 0) {
+                            log.d("tag", "notif should send");
+                            notif.execute(name);
+                        }
+                         */
                     }
                 });
             }
