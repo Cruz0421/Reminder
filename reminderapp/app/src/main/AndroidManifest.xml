@@ -12,20 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.reminderapp.Register"></activity>
         <activity
-            android:name="com.example.reminderapp.AddReminder"
+            android:name=".Login"
             android:exported="false" />
         <activity
-            android:name="com.example.reminderapp.ReminderList"
+            android:name=".AddReminder"
+            android:exported="false" />
+        <activity
+            android:name=".ReminderList"
             android:exported="false" />
 
         <receiver
-            android:name="com.example.reminderapp.MyBroadcastReceiver"
+            android:name=".MyBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name="com.example.reminderapp.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,8 +44,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
-
-
     </application>
 
 </manifest>
