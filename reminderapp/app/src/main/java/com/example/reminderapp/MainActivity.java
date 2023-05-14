@@ -84,46 +84,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // TODO: implement login
-    public void login () {
+    public boolean login () {
         email = etEmail.getText().toString().trim();
         password = etPassword.getText().toString().trim();
-        final Intent success = new Intent(this, ReminderList.class);
 
-        if(!email.equals("") && !password.equals("")) {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    if (response.equals("success")) {
-                        startActivity(success);
-                        finish();
-                    } else if (response.equals("failure")) {
-                        errorMsg = "Incorrect email and/or password.";
-                        errortext.setText(errorMsg);
-                        //Toast.makeText(MainActivity.this, "Invalid Login Id/Password", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(MainActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
-                }
-            }){
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> data = new HashMap<>();
-                    data.put( "email", email);
-                    data.put("password", password);
-                    return data;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(stringRequest);
-        }else{
-            errorMsg = "Please input email and password.";
-            errortext.setText(errorMsg);
-            //Toast.makeText(this, "Fields can not be empty!", Toast.LENGTH_SHORT).show();
+        if(email.equals("")||password.equals(""))
+            Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+        else {
+            Boolean checkuserpass = dbHandler.checkusernamepassword(email, password);
+            if(checkuserpass == true) {
+                Toast.makeText(this, "Sign in Success", Toast.LENGTH_SHORT).show();
+                return true;
+            }else{
+                Toast.makeText(this, "Username or Password wrong", Toast.LENGTH_SHORT).show();
+            }
         }
+        return false;
     }
 
     public void register(View view) {
@@ -138,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.loginbutton:
                 //what should happen when user clicks login
-                //login();
                 final Intent temp = new Intent(this, ReminderList.class);
-                startActivity(temp);
+                if (login())
+                    startActivity(temp);
                 break;
             case R.id.registerbutton:
                 // what should happen when user clicks register
@@ -169,8 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             return;
         }
-        //});
-        //thread.start();
     };
 
 }

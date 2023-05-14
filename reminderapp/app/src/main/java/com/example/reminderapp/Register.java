@@ -37,6 +37,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     String errorMsg = "";
     Button loginbutton;
     Button registerbutton;
+    database dbHandler;
 
     // main functionality
     @Override
@@ -56,8 +57,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         registerbutton = findViewById(R.id.registerbutton);
         registerbutton.setOnClickListener(this);
 
+        dbHandler = new database(this);
+
     }
 
+    /*
     // saves register information to database
     public void save(View view) {
         email = etEmail.getText().toString().trim();
@@ -96,6 +100,35 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         }
 
     }
+     */
+
+    public boolean register() {
+        email = etEmail.getText().toString();
+        password = etPassword.getText().toString();
+        reenterPassword = etReenterPassword.getText().toString();
+
+        if (email.equals("") || email.equals("") || email.equals(""))
+            Toast.makeText(this, "Please Fill all blanks", Toast.LENGTH_SHORT).show();
+        else {
+            if (password.equals(reenterPassword)) {
+                Boolean checkuser = dbHandler.chechusername(email);
+                if (checkuser == false) {
+                    Boolean insert = dbHandler.insertData(email, password);
+                    if (insert == true) {
+                        Toast.makeText(this, "Registered Success", Toast.LENGTH_SHORT).show();
+                        return true;
+                    } else {
+                        Toast.makeText(this, "Registered Failed", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Username Exists! Sign in", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return false;
+    }
 
     // click event handler
     @Override
@@ -107,6 +140,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 break;
             case R.id.registerbutton:
                 // what should happen when user clicks register
+                final Intent temp2 = new Intent(this, MainActivity.class);
+                if (register())
+                    startActivity(temp2);
                 break;
         }
     }

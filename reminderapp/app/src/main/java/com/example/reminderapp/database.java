@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.session.PlaybackState;
+
+import androidx.annotation.Nullable;
 
 public class database extends SQLiteOpenHelper {
 
@@ -34,7 +37,7 @@ public class database extends SQLiteOpenHelper {
         else
             return true;
     }
-    public boolean checkusername (String username){
+    public boolean chechusername (String username){
         SQLiteDatabase MyDB = this.getWritableDatabase();
         Cursor cursor = MyDB.rawQuery("Select * from users where username = ?", new String[] {username});
         if(cursor.getCount()>0)
