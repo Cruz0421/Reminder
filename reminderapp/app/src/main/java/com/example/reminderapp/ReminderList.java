@@ -31,7 +31,10 @@ public class ReminderList extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminderlist);
 
-        addReminder = (Button) findViewById(R.id.addreminder);
+        Intent thisIntent = getIntent();
+        String email = thisIntent.getStringExtra("email");
+
+        addReminder = findViewById(R.id.addreminder);
         addReminder.setOnClickListener(this);
 
         layout = findViewById(R.id.container);

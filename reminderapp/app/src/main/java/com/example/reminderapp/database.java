@@ -1,3 +1,9 @@
+/*
+Authors: Taylor Hooser, Patrick Cruz
+Date: Spring 2023
+Purpose: Login page for app
+*/
+
 package com.example.reminderapp;
 
 import android.content.ContentValues;
@@ -5,21 +11,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.media.session.PlaybackState;
-
-import androidx.annotation.Nullable;
 
 public class database extends SQLiteOpenHelper {
 
-    public static final String DBName = "Login.db";
-
     public database(Context context) {
-        super(context, "Login.db", null, 1 );
+        super(context, "reminder.db", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDB) {
         MyDB.execSQL("create Table users(username TEXT primary key, password TEXT)");
+
+        // TODO: create a reminder table to store reminder information
+        // with a foreign key referencing username
+        // future step: use cookie system to ensure all activities have access to current logged
+        // in user info. then, use this to store/retrieve reminder information from DB
     }
 
     @Override

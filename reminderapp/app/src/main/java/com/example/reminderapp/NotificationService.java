@@ -34,6 +34,7 @@ public class NotificationService extends Service {
     }
 
     // what happens when BG service starts
+    // TODO: fix crash after task is done
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
@@ -44,7 +45,11 @@ public class NotificationService extends Service {
     // stub: what happens when BG service is created
     @Override
     public void onCreate() {
-        // stub
+        // TODO: check if email is null
+        // if null, dont start the bg service
+
+        //Intent thisIntent = getIntent();
+        //String email = thisIntent.getStringExtra("email");
     }
 
     // stops timer when background service stops
@@ -79,8 +84,8 @@ public class NotificationService extends Service {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        //TODO CALL NOTIFICATION FUNC
-                        // for each reminder:
+                        //TODO: notification function
+                            // for each reminder:
                             // check if current time matches
                                 //notif.execute(name);
                     }

@@ -48,6 +48,9 @@ public class AddReminder extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addreminder);
 
+        Intent thisIntent = getIntent();
+        String email = thisIntent.getStringExtra("email");
+
         // buttons
         saveButton = (Button) findViewById(R.id.save);
         saveButton.setOnClickListener(this);

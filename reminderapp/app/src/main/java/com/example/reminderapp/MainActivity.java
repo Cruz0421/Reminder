@@ -34,8 +34,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private String URL = "ssh://artemis_csub/home/stu/pcruz/public_html/Reminder/login.php";
-
     Button loginbutton;
     Button registerbutton;
     TextView message;
@@ -58,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         dbHandler = new database(this);
 
-        loginbutton = (Button) findViewById(R.id.loginbutton);
+        loginbutton = findViewById(R.id.loginbutton);
         loginbutton.setOnClickListener(this);
-        registerbutton = (Button) findViewById(R.id.registerbutton);
+        registerbutton = findViewById(R.id.registerbutton);
         registerbutton.setOnClickListener(this);
 
-        message = (TextView) findViewById(R.id.logintext);
+        message = findViewById(R.id.logintext);
         errortext = findViewById(R.id.errortext);
         errortext.setText(errorMsg);
 
@@ -80,10 +78,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
-        startService(new Intent(this, NotificationService.class));
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        serviceIntent.putExtra("email", email);
+        startService(serviceIntent);
     }
 
-    // TODO: implement login
     public boolean login () {
         email = etEmail.getText().toString().trim();
         password = etPassword.getText().toString().trim();
@@ -114,9 +113,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.loginbutton:
                 //what should happen when user clicks login
-                final Intent temp = new Intent(this, ReminderList.class);
-                if (login())
+                Intent temp = new Intent(this, ReminderList.class);
+                if (login()) {
+                    temp.putExtra("email", email);
                     startActivity(temp);
+                }
                 break;
             case R.id.registerbutton:
                 // what should happen when user clicks register
