@@ -27,5 +27,6 @@ Reminder application for CMPS 3390 Application Development
 ## Building and Running
 ```
 - Minimum API is 26, reccomend 29
+- reminderapp folder is the main project code, the VSCode folder is unused PHP code
 ```
 
